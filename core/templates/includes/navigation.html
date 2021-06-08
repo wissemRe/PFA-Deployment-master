@@ -1,0 +1,113 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
+    <div class="container-fluid">
+        <div class="navbar-wrapper">
+            <a class="navbar-brand" href="#pablo">Dashboard</a>
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+        </button>
+
+        {% if user.is_authenticated %}
+            <div class="collapse navbar-collapse justify-content-end">
+                <form class="navbar-form" id="searchForm" action="javascript:findString();">
+                    <div class="input-group no-border">
+                        <input type="text" id="searchItem" value="" class="form-control" placeholder="Search...">
+                        <button class="btn btn-white btn-round btn-just-icon" id="go" type="button"
+                                onclick="document.getElementById('searchForm').submit(); return false;">
+                            <i class="material-icons">search</i>
+                            <div class="ripple-container"></div>
+                        </button>
+                    </div>
+                </form>
+
+                <ul class="navbar-nav">
+
+                    {% block content %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link"
+                               href=""
+                               id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                               aria-expanded="false">
+                                <i class="material-icons">notifications</i>
+                                <span class="notification">{{ inbox }}</span>
+                                <p class="d-lg-none d-md-block">
+                                    Some Actions
+                                </p>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item text-warning">
+                                    Your email is now activated {{ request.user }} !
+                                </a>
+                                <a class="dropdown-item text-warning">Email notifications will appear here!</a>
+                                {% for msg in emails %}
+                                    <a class="dropdown-item" href="#">{{ msg }}</a>
+                                {% endfor %}
+                            </div>
+                        </li>
+                    {% endblock %}
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#pablo" id="navbarDropdownProfile" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            <i class="material-icons">person</i>
+                            <p class="d-lg-none d-md-block">
+                                Account
+                            </p>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
+                            <a class="dropdown-item" href="/page-user.html">Profile "{{ user }}"</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+</nav>
+<script>
+    var TRange = null;
+
+    function findString() {
+        var name = document.getElementById("searchForm").elements["searchItem"].value;
+        var pattern = name.toLowerCase();
+        var str = pattern;
+        if (parseInt(navigator.appVersion) < 4) return;
+        var strFound;
+        if (window.find) {
+
+            // CODE FOR BROWSERS THAT SUPPORT window.find
+
+            var original_content = window;
+            strFound = original_content.find(str);
+            if (!strFound) {
+                strFound = original_content.find(str, 0, 1);
+                while (original_content.find(str, 0, 1)) ;
+            }
+        } else if (navigator.appName.indexOf("Microsoft") != -1) {
+
+            // EXPLORER-SPECIFIC CODE
+
+            if (TRange != null) {
+                TRange.collapse(false);
+                strFound = TRange.findText(str);
+                if (strFound) TRange.select();
+            }
+            if (TRange == null || strFound == 0) {
+                TRange = self.document.body.createTextRange();
+                strFound = TRange.findText(str);
+                if (strFound) TRange.select();
+            }
+        } else if (navigator.appName == "Opera") {
+            alert("Opera browsers not supported, sorry...")
+            return;
+        }
+        if (!strFound) alert(" '" + str + "' not found!")
+
+    }
+</script>

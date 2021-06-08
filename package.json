@@ -1,0 +1,21 @@
+{
+    "name": "pfa-dashboard-django",
+    "mastertemplate": "pfa-code-django-dashboard",
+    "version": "1.0.1",
+    "description": "PFA project - Django Code ",
+    "scripts": {},
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/creativetimofficial/material-dashboard-django"
+    },
+    "bugs": {
+        "url": "https://github.com/creativetimofficial/material-dashboard-django/issues",
+        "email": "support@appseed.us"
+    },
+    "author": "PFA Creative-Team",
+    "engines": {
+        "node": ">=10.0.0"
+    },
+    "dependencies": {},
+    "devDependencies": {}
+}
